@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 7.0.0-rc2">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.19.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>Hexo使用Github Action实现持续集成 - 一只鬆の小站</title>
+
+  
+    <meta name="description" content="作为一个高木粉，我买入了takagi.icu这个名，但毕竟域名要按用途来用，将来这个域名肯定不会是博客。同时，作为一个学生党，这个域名能不能保持续订也是一个问题。所以我决定在GitHub上利用GitHub的Action构建一个稳定且一直能存在的博客，国内访问不一定快，但胜在一直都有。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo使用Github Action实现持续集成">
+<meta property="og:url" content="https://blog.sotkg.cn/posts/7b063777.html">
+<meta property="og:site_name" content="一只鬆の小站">
+<meta property="og:description" content="作为一个高木粉，我买入了takagi.icu这个名，但毕竟域名要按用途来用，将来这个域名肯定不会是博客。同时，作为一个学生党，这个域名能不能保持续订也是一个问题。所以我决定在GitHub上利用GitHub的Action构建一个稳定且一直能存在的博客，国内访问不一定快，但胜在一直都有。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-19T12:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-14T11:56:35.430Z">
+<meta property="article:author" content="一只鬆">
+<meta property="article:tag" content="建站">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="Github Action">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <meta name="keywords" content="建站,Hexo,Github Action">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="一只鬆の小站" type="application/atom+xml">
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" href="/./image/favicon.ico">
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://jsd.onmicrosoft.cn/gh/cdn-x/placeholder@1.0.4/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://cravatar.cn/avatar/7a54b931dd7608d9b17b5625c31ed000?s=512&d=wavatar&r=g" onerror="javascript:this.classList.add('error');this.src='https://jsd.onmicrosoft.cn/gh/cdn-x/placeholder@1.0.4/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">一只鬆の小站</div><div class="sub cap">心有多宽,世界就有多远</div></a></div>
+
+<nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/friends/">社交</a><a class="nav-item" href="/about/">关于</a></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">Hexo使用Github Action实现持续集成</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-1-%E6%9C%AC%E5%9C%B0%E8%BF%90%E8%A1%8C%E6%A3%80%E6%9F%A5"><span class="toc-number">1.</span> <span class="toc-text">Step.1 本地运行检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-2-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">Step.2 配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-3-%E7%94%9F%E6%88%90%E5%AF%86%E9%92%A5"><span class="toc-number">3.</span> <span class="toc-text">Step.3 生成密钥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-4-%E5%BB%BA%E7%AB%8BWorkflow"><span class="toc-number">4.</span> <span class="toc-text">Step.4 建立Workflow</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step-5-%E5%AE%8C%E6%88%90"><span class="toc-number">5.</span> <span class="toc-text">Step.5 完成</span></a></li></ol></div></div></widget>
+
+
+
+
+
+<widget class="widget-wrapper tagcloud"><div class="widget-header cap theme dis-select"><span class="name">标签云</span></div><div class="widget-body fs14"><a href="/tags/CDN/" style="font-size: 18px;" class="tag -5">CDN</a> <a href="/tags/Cloudflare/" style="font-size: 12px;" class="tag -0">Cloudflare</a> <a href="/tags/DNS/" style="font-size: 12px;" class="tag -0">DNS</a> <a href="/tags/Github-Action/" style="font-size: 12px;" class="tag -0">Github Action</a> <a href="/tags/Hexo/" style="font-size: 12px;" class="tag -0">Hexo</a> <a href="/tags/Nextjs/" style="font-size: 12px;" class="tag -0">Nextjs</a> <a href="/tags/RTheme/" style="font-size: 12px;" class="tag -0">RTheme</a> <a href="/tags/SSL/" style="font-size: 12px;" class="tag -0">SSL</a> <a href="/tags/Waline/" style="font-size: 12px;" class="tag -0">Waline</a> <a href="/tags/%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE/" style="font-size: 12px;" class="tag -0">主题配置</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 12px;" class="tag -0">博客</a> <a href="/tags/%E5%9F%9F%E5%90%8D/" style="font-size: 18px;" class="tag -5">域名</a> <a href="/tags/%E5%BB%BA%E7%AB%99/" style="font-size: 24px;" class="tag -10">建站</a> <a href="/tags/%E9%9D%A2%E6%9D%BF/" style="font-size: 12px;" class="tag -0">面板</a></div></widget>
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%BB%BA%E7%AB%99%E6%80%9D%E8%B7%AF/">建站思路</a></div><div id="post-meta">发布于&nbsp;<time datetime="2023-04-19T12:00:00.000Z">2023-04-19</time></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>Hexo使用Github Action实现持续集成</span></h1>
+<p>作为一个高木粉，我买入了takagi.icu这个名，但毕竟域名要按用途来用，将来这个域名肯定不会是博客。<br>同时，作为一个学生党，这个域名能不能保持续订也是一个问题。所以我决定在GitHub上利用GitHub的Action构建一个稳定且一直能存在的博客，国内访问不一定快，但胜在一直都有。</p>
+<span id="more"></span>
+
+<p>但是，如果采用传统方法推送博客到GitHub站点仓库的话，这意味我需要每次更新博客都需要重新Git推送站点。</p>
+<p>当然，这对于本地md文件写博客的人来说倒也没什么。但不幸的是，我自建了Qexo作为在线编辑器，显然传统的部署方式肯定是不行的。在之前，我一直发愁这个问题。</p>
+<p>直到后来我在用GitHub Action来续订微软e5的时候突然才想起不是还有这东西么，于是去用它建立了一个全自动部署的GitHub托管站点</p>
+<h3 id="Step-1-本地运行检查"><a href="#Step-1-本地运行检查" class="headerlink" title="Step.1 本地运行检查"></a>Step.1 本地运行检查</h3><p>在进行部署之前，首先我们要确保站点本地是能顺利运行并且能够生成正常的静态站点文件。</p>
+<p>部署一个Hexo博客（部署Hexo请参考Hexo.io的官方文档）</p>
+<p>部署完成后，在站点根目录下运行如下指令（指令可简写为 hexo s）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+
+<p>访问<a href="http://localhost:4000后，在确保站点能够顺利正常显示内容并且运行正常后，再运行如下指令检查站点静态文件是否生成正常（hexo">http://localhost:4000后，在确保站点能够顺利正常显示内容并且运行正常后，再运行如下指令检查站点静态文件是否生成正常（hexo</a> clean不可简写，但hexo generate可简写为 hexo g）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>如果能够生成正常，再运行一次 hexo clean清除静态文件，本地运行检查步骤就完成了。</p>
+<h3 id="Step-2-配置文件"><a href="#Step-2-配置文件" class="headerlink" title="Step.2 配置文件"></a>Step.2 配置文件</h3><p>关于如何将仓库上传至GitHub，请自行查询资料，此处只介绍上传后的相关配置</p>
+<p>首先先确认Hexo的配置文档config.yml有如下配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  <span class="built_in">type</span>: git</span><br><span class="line">  repository: git@github.com:yzsong06/Demo.git</span><br><span class="line">  branch: main</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>此处Repository请自行设置为你的GitHub Pages仓库，例如xxx.github.io 注意使用SSH地址！</p>
+</blockquote>
+<h3 id="Step-3-生成密钥"><a href="#Step-3-生成密钥" class="headerlink" title="Step.3 生成密钥"></a>Step.3 生成密钥</h3><p><strong>对于一些用户……</strong></p>
+<ul>
+<li>对于Windows10用户，可在Store商店安装Ubuntu</li>
+<li>对于安卓用户，可安装Termux并安装OpenSSH</li>
+<li>对于Linux用户，呃……你都用Linux了应该懂（Doge）</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096 -C <span class="string">&quot;Hexo Deploy Key&quot;</span> -f github-deploy-key -N <span class="string">&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这将会在当前目录生成两个文件：<br>github-deploy-key —— 私钥</p>
+<p>github-deploy-key.pub —— 公钥</p>
+<p>我们把<strong>私钥</strong>放到我们存放 Hexo 原始文件的代码仓库里面，用于触发 Actions 时使用。<br>把<strong>公钥</strong>放到 GitHub Pages 对应的仓库里面，并开启Action的写入权限，用于 Hexo 部署时的写入工作。</p>
+<p><strong>配置私钥</strong>：</p>
+<ol>
+<li>在 GitHub 上打开保存 Hexo 的仓库，访问 <strong>Settings -&gt; Secrets -&gt; New secret</strong></li>
+<li>然后在名字（<strong>Name</strong>）部分填写：<strong>HEXO_DEPLOY_KEY</strong><br>，一定要注意<strong>大小写</strong>，这个后面的 <strong>GitHub Actions</strong>  用的到，一定不能写错。</li>
+<li>然后在 <strong>Value</strong> 的部分填入 <strong>github-deploy-key</strong> 中的内容</li>
+</ol>
+<p><strong>配置公钥：</strong></p>
+<ol>
+<li>接下来我们需要访问存放网页的仓库，也就是 Hexo 部署以后的仓库，比如：Username.github.io 这种，访问 <strong>Settings -&gt; Deploy keys</strong></li>
+<li>按 <strong>Add deploy key</strong> 来添加一个新的公钥</li>
+<li>在 Title 中输入：<strong>HEXO_DEPLOY_PUB</strong> 字样，当然也可以填写其它自定义的名字，这里只是备注。</li>
+<li>在 Key 中粘贴 <strong>github</strong>-deploy-key.pub 文件的内容</li>
+<li>勾选 <strong>Allow write access</strong> 来打开写权限，否则会无法写入仓库导致部署失败</li>
+</ol>
+<h3 id="Step-4-建立Workflow"><a href="#Step-4-建立Workflow" class="headerlink" title="Step.4 建立Workflow"></a>Step.4 建立Workflow</h3><p>首先在 Hexo 的仓库中创建一个新文件 <strong>.github&#x2F;workflows&#x2F;push.yml</strong><br>，文件名可以自己取，但是一定要放在</p>
+<p> <strong>.github&#x2F;workflows</strong>目录下，也可使用<strong>Action</strong>的新建功能建立文件，文件内容如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">name: 部署站点</span><br><span class="line"></span><br><span class="line">on:</span><br><span class="line">  push:</span><br><span class="line">    branches: [ <span class="string">&quot;main&quot;</span> ]</span><br><span class="line"></span><br><span class="line"><span class="built_in">jobs</span>:</span><br><span class="line">  build:</span><br><span class="line">    runs-on: ubuntu-latest</span><br><span class="line">    strategy:</span><br><span class="line">      matrix:</span><br><span class="line">        node-version: [16.x]</span><br><span class="line"></span><br><span class="line">    steps:</span><br><span class="line">      - uses: actions/checkout@v1</span><br><span class="line"></span><br><span class="line">      - name: 设置为 Node.js <span class="variable">$&#123;&#123; matrix.node-version &#125;</span>&#125;</span><br><span class="line">        uses: actions/setup-node@v1</span><br><span class="line">        with:</span><br><span class="line">          node-version: <span class="variable">$&#123;&#123; matrix.node-version &#125;</span>&#125;</span><br><span class="line"></span><br><span class="line">      - name: 配置环境变量</span><br><span class="line">        <span class="built_in">env</span>:</span><br><span class="line">          HEXO_DEPLOY_PRI: <span class="variable">$&#123;&#123;secrets.HEXO_DEPLOY_PRI&#125;</span>&#125;</span><br><span class="line">        run: |</span><br><span class="line">          <span class="built_in">mkdir</span> -p ~/.ssh/</span><br><span class="line">          <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$HEXO_DEPLOY_PRI</span>&quot;</span> &gt; ~/.ssh/id_rsa</span><br><span class="line">          <span class="built_in">chmod</span> 600 ~/.ssh/id_rsa</span><br><span class="line">          ssh-keyscan github.com &gt;&gt; ~/.ssh/known_hosts</span><br><span class="line">          git config --global user.name <span class="string">&quot;yzsong06&quot;</span></span><br><span class="line">          git config --global user.email <span class="string">&quot;yzsong06@outlook.com&quot;</span></span><br><span class="line">      - name: 安装部署时运行环境</span><br><span class="line">        run: |</span><br><span class="line">          npm i -g hexo-cli</span><br><span class="line">          npm i hexo-deployer-git --save</span><br><span class="line">          npm i</span><br><span class="line">      - name: 生成站点静态文件</span><br><span class="line">        run: |</span><br><span class="line">          hexo clean &amp;&amp; hexo generate</span><br><span class="line">      - name: 使用hexo-deployer部署站点</span><br><span class="line">        run: |</span><br><span class="line">          hexo deploy</span><br></pre></td></tr></table></figure>
+
+<h3 id="Step-5-完成"><a href="#Step-5-完成" class="headerlink" title="Step.5 完成"></a>Step.5 完成</h3><p>接下来保存文件后一般即可在仓库的Action页面看到反馈结果了，Job出现绿色对号即为部署成功！</p>
+
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/posts/c58da9e.html">Cloudflare支持代理的HTTP/HTTPS端口</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/posts/72c539d5.html">有关高木圈囤域名用途之事的回应</a></div></section></div>
+
+
+<div class="related-wrap reveal" id="related-posts">
+    <section class='header'>
+      <div class='title cap theme'>您可能感兴趣的文章</div>
+    </section>
+    <section class='body'>
+    <div class="related-posts"><a class="item" href="/posts/5a8a6c8d.html" title="用YesPlayMusic部署一个音乐解析站"><span class="title">用YesPlayMusic部署一个音乐解析站</span><span class="excerpt">自己部署一个基于YesPlayMusic的音乐解析站</span></a><a class="item" href="/posts/e95ee125.html" title="两个域名比价网站推荐"><span class="title">两个域名比价网站推荐</span><span class="excerpt">相信平常大家获取域名的时候总是这域名不行那域名不行，要不就输入想要的发现已经被占用了，要不就是买下域名后发现其他网站是买下域名便宜，续费也便宜，可以说追悔莫及，今天我会向你推荐两个比价网站，让你买域名不做那个大怨种，买的放心，用的安心。</span></a><a class="item" href="/posts/88b12552.html" title="Vercel托管服务绑定域名打不开页面解决方案"><span class="title">Vercel托管服务绑定域名打不开页面解决方案</span><span class="excerpt">我曾经在Vercel上托管页面的时候，发现绑定域名后中国大陆境内打不开域名项目，去查了一下，原因是众所周知的
+Ps：好用而且免费的东西还是没逃过这个结局，跟vercel.app这个域名在中国大陆地区的死法一样</span></a><a class="item" href="/posts/5e57e4e5.html" title="国内外免费或低价建站平台汇总（长期更新）"><span class="title">国内外免费或低价建站平台汇总（长期更新）</span><span class="excerpt">前言这篇文章献给那些正在寻找免费或低价建站平台的站长们，这篇文章会不定时长期维持更新，列表会不断完善与修改更新，部分内容仅代表个人观点，仅供参考（白嫖虽好，可不要过度白嫖，薅羊毛多少也要有点度，把羊薅死属实得不偿失了）（列表中的所有主...</span></a><a class="item" href="/posts/c58da9e.html" title="Cloudflare支持代理的HTTP/HTTPS端口"><span class="title">Cloudflare支持代理的HTTP/HTTPS端口</span></a></div></section></div>
+
+
+
+  <div class='related-wrap md-text reveal' id="comments">
+    <section class='header cmt-title cap theme'>
+      快来参与讨论吧
+    </section>
+    <section class='body cmt-body twikoo'>
+      
+
+<div id="twikoo_container"><svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg></div>
+    </section>
+  </div>
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs14">博客</span><a href="/">主页</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archive/">归档</a></div><div class="sitemap-group"><span class="fs14">社交</span><a href="/link">友链</a><a href="/comments">留言板</a></div><div class="sitemap-group"><span class="fs14">更多</span><a href="/about/">关于本站</a><a target="_blank" rel="noopener" href="https://github.com/yzsong06/">GitHub</a></div></div><div class="text"><p>本站由 <a href="/">@一只鬆</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = stellar.config.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.19.0';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.19.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+    root : '/',
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://jsd.onmicrosoft.cn/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://jsd.onmicrosoft.cn/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://jsd.onmicrosoft.cn/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://jsd.onmicrosoft.cn/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://jsd.onmicrosoft.cn/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://jsd.onmicrosoft.cn/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://jsd.onmicrosoft.cn/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.copycode = Object.assign({"enable":true,"js":"/js/plugins/copycode.js","default_text":"Copy","success_text":"Copied"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+    function load_twikoo() {
+        if (!document.querySelectorAll("#twikoo_container")[0]) return;
+        stellar.loadScript('https://npm.onmicrosoft.cn/twikoo@1.6.15/dist/twikoo.all.min.js', {defer: true}).then(function () {
+            const el = document.getElementById("twikoo_container");
+            var path = el.getAttribute('comment_id');
+            if (!path) {
+                path = decodeURI(window.location.pathname);
+            }
+            twikoo.init(Object.assign({"js":"https://npm.onmicrosoft.cn/twikoo@1.6.15/dist/twikoo.all.min.js","envId":"https://twikoo.sotkg.cn"}, {
+                el: '#twikoo_container',
+                path: path,
+            }));
+        });
+    }
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        load_twikoo();
+    });
+</script>
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>

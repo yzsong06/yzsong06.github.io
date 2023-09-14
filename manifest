@@ -1,0 +1,21 @@
+{
+	"name": "一只鬆の小站",
+	"short_name": "一只鬆の小站",
+	"description": "描述",
+	"icons": [
+		{
+			"src": "https://cravatar.cn/avatar/7a54b931dd7608d9b17b5625c31ed000?s=192&d=wavatar&r=g",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "https://cravatar.cn/avatar/7a54b931dd7608d9b17b5625c31ed000?s=512&d=wavatar&r=g",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	],
+	"theme_color": "#fff",
+	"background_color": "#fff",
+	"display": "standalone",
+	"start_url": "/"
+}

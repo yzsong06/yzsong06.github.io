@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Allow: /posts/
+Allow: /archives/
+Disallow: /images/
+Disallow: /categories/
+Disallow: /tags/ 
+Disallow: /resources/ 
+Disallow: /vendors/
+Disallow: /js/
+Disallow: /css/
+Disallow: /fonts/
+Disallow: /vendors/
+
+Sitemap: https://blog.sotkg.cn/sitemap.xml
+BaiduSitemap: https://blog.sotkg.cn/baidusitemap.xml
